@@ -1,17 +1,21 @@
 import React from "react";
 
-const Card = ({ movie: { imdbID, Year, Poster, Title, Type } }) => {
+const Card = ({ movie: { id, year, image, title, Type, genre } }) => {
+  // console.log(title);
   return (
     <div className="movie">
       <div>
-        <p>{Year}</p>
+        <p>{year}</p>
       </div>
       <div>
-        <img src={Poster} alt="poster-img" />
+        <img src={image} alt="poster-img" />
       </div>
       <div>
-        <span>{Type}</span>
-        <h3>{Title}</h3>
+        {genre?.map((item, i) => (
+          <span key={i}>{item}</span>
+        ))}
+
+        <h3>{title}</h3>
       </div>
     </div>
   );

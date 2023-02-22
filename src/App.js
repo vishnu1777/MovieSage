@@ -2,41 +2,37 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import SearchIcon from "./search.svg";
 import Card from "./Card";
-const API_KEY = process.env.REACT_APP_OMDB_API_KEY;
+import { fetchFromAPI, fetchFromAPIOnce } from "./utils/fetchFromApi";
+const API_KEY = "http://www.omdbapi.com/?i=tt3896198&apikey=5cfea68e";
 
 const App = () => {
   const [movieData, setMovieData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("kung fu panda");
+  const [searchTerm, setSearchTerm] = useState();
 
-  const searchMovies = async (title) => {
-    const response = await fetch(`${API_KEY}&s=${title}`);
-    const data = await response.json();
-    setMovieData(data.Search);
-  };
   useEffect(() => {
-    searchMovies(searchTerm);
+    const response = fetchFromAPIOnce().then((data) => setMovieData(data));
   }, []);
 
   return (
     <div className="app">
-      <h1>MovieSage</h1>
-      <div className="search">
+      <h1>MovieSpot</h1>
+      {/* <div className="search">
         <input
           type="text"
           onChange={(e) => setSearchTerm(e.target.value)}
           value={searchTerm}
-          placeholder="Search for movies"
+          placeholder="Enter number to get movie"
         />
         <img
           src={SearchIcon}
           alt="search"
           onClick={() => searchMovies(searchTerm)}
         />
-      </div>
+      </div> */}
       {movieData?.length > 0 ? (
         <div className="container">
           {movieData?.map((movie) => (
-            <Card movie={movie} key={movie.imdbID} />
+            <Card movie={movie} key={movie.rank} />
           ))}
         </div>
       ) : (
